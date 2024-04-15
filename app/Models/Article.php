@@ -15,6 +15,11 @@ class Article extends Model
         'name', 'excerpt', 'description', 'category_id', 'user_id', 'status'
     ];
 
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
