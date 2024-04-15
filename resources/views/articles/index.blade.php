@@ -3,7 +3,7 @@
 @section('content')
     <div class="space-y-2 xl:items-baseline xl:space-y-0 w-4/5 pt-20 sm:w-3/5 mx-auto">
         <div class="w-full mx-auto mb-10">
-               <span class="block inline text-md text-white transition-all hover:text-gray-100 font-bold uppercase">
+               <span class="block text-md text-white transition-all hover:text-gray-100 font-bold uppercase">
                    <a href="{{ route('articles.create') }}" class="bg-red-700 rounded-md py-3 px-5">
                         Create Article
                    </a>
@@ -27,7 +27,7 @@
             </span>
 
             <a href="{{ route('articles.show', $article->slug) }}">
-                <h2 class="hover:text-red-700 sm:w-3/5 transition-all text-white sm:pt-0 pt-10 text-3xl sm:text-4xl font-bold sm:pb-2 w-full sm:pt-10 block">
+                <h2 class="hover:text-red-700 sm:w-3/5 transition-all text-white pt-10 text-3xl sm:text-4xl font-bold sm:pb-2 w-full sm:pt-10 block">
                     {{ $article->title }}
                 </h2>
             </a>
@@ -37,7 +37,7 @@
             </p>
 
             @foreach($article->tags as $tag)
-                <span class="block inline text-xs text-white transition-all hover:text-gray-100 font-bold pr-2 uppercase">
+                <span class="block text-xs text-white transition-all hover:text-gray-100 font-bold pr-2 uppercase">
                     <a href="/" class="bg-red-700 rounded-md py-1 px-3">
                         {{ $tag->name }}
                     </a>
