@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreArticleRequest;
 use App\Models\Article;
+use App\Models\Category;
+use App\Models\Tag;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ArticleController extends Controller
 {
@@ -19,23 +25,44 @@ class ArticleController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
-        //
+        $categories = Category::pluck('name', 'id');
+        $tags = Tag::pluck('name', 'id');
+
+        return view('articles.create', compact('categories', 'tags'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreArticleRequest $request): RedirectResponse
     {
-        //
+        $article = Article::create([
+            'title' => $request->title,
+            'slug' => Str::slug($request->title),
+            'excerpt' => $request->excerpt,
+            'description' => $request->description,
+            'status' => $request->status === 'on',
+            'user_id' => auth()->id(),
+            'category_id' => $request->category_id
+        ]);
+
+        // $article = Article::create([
+        //     'slug' => Str::slug($request->title),
+        //     'user_id' => auth()->id(),
+        //     'status' => $request->status === 'on'
+        // ] + $request->validated());
+
+        $article->tags()->attach($request->tags);
+
+        return redirect('/articles')->with('message', 'Article has been created successfully.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Article $article)
+    public function show(Article $article): View
     {
         return view('articles.show', compact('article'));
     }
