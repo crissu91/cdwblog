@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreArticleRequest;
+use App\Http\Requests\UpdateArticleRequest;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Tag;
@@ -27,10 +28,7 @@ class ArticleController extends Controller
      */
     public function create(): View
     {
-        $categories = Category::pluck('name', 'id');
-        $tags = Tag::pluck('name', 'id');
-
-        return view('articles.create', compact('categories', 'tags'));
+        return view('articles.create', $this->getFormData());
     }
 
     /**
@@ -72,15 +70,19 @@ class ArticleController extends Controller
      */
     public function edit(Article $article)
     {
-        //
+        return view('articles.edit', array_merge(compact('article'), $this->getFormData()));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Article $article)
+    public function update(UpdateArticleRequest $request, Article $article): RedirectResponse
     {
-        //
+        $article->update($request->validated() + ['slug' => Str::slug($request->title)]);
+
+        $article->tags()->sync($request->tags);
+
+        return redirect('/dashboard')->with('message', 'The article was successfully updated.');
     }
 
     /**
@@ -89,5 +91,13 @@ class ArticleController extends Controller
     public function destroy(Article $article)
     {
         //
+    }
+
+    private function getFormData(): array
+    {
+        $categories = Category::pluck('name', 'id');
+        $tags = Tag::pluck('name', 'id');
+
+        return compact('categories', 'tags');
     }
 }
