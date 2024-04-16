@@ -90,7 +90,9 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
-        //
+        $article->delete();
+
+        return redirect('/dashboard')->with('message', 'Article has been successfully deleted.');
     }
 
     private function getFormData(): array

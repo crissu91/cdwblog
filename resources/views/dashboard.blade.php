@@ -26,9 +26,18 @@
                 <div class="pt-4">
                     @forelse ($articles as $article )
                         <div>
-                            <a href="{{route('articles.edit', $article->slug)}}" class="inline-flex text-md pb-6 pt-8 items-center py-2 leading-4 font-medium rounded-md text-orange-400 hover:text-orange-300 focus:outline-none transition ease-in-out duration-150 float-right">
+                            <a href="{{route('articles.edit', $article->slug)}}" class="inline-flex text-md pb-6 pt-8 items-center py-2 leading-4 font-medium rounded-md text-orange-400 hover:text-orange-300 focus:outline-none transition ease-in-out duration-150 float-right p-3">
                             Update</a>
                         </div>
+
+                        <form action="{{route('articles.destroy', $article->slug)}}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button class="inline-flex text-md pb-6 pt-8 items-center py-2 leading-4 font-medium rounded-md text-red-400 hover:text-red-300 focus:outline-none transition ease-in-out duration-150 float-right">
+                                Delete
+                            </button>
+
+                        </form>
                         <div>
                             <a href="{{route('articles.show', $article->slug )}}">
                                 <h2 class="inline-flex text-lg pb-6 pt-8 items-center py-2 leading-4 font-medium rounded-md text-gray-400 hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
